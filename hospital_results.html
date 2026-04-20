@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Results - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" style="display: flex; align-items: center;">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto; margin-right: 10px;">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 22px; font-weight: 800; line-height: 1; letter-spacing: 0.5px;">
+                    <span style="color: #9b1b30;">HEMO</span><span style="color: #1d3557;">CONNECT</span>
+                </div>
+                <div style="font-size: 8px; font-weight: 500; color: #8c8c8c; letter-spacing: 1px; margin-top: 2px; text-transform: uppercase;">
+                    Intelligent Blood Logistics
+                </div>
+            </div>
+        </div>
+        <a href="index.html" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="main-container">
+        <div style="width: 100%; max-width: 600px;">
+            <a href="request.html" class="back-link">← Back to Request Form</a>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="page-title" style="margin-bottom: 5px;">Hospital Availability</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 25px;">Live stock from nearby official blood banks.</p>
+
+            <div id="statusArea" style="margin-top: 15px; text-align: center;">
+                <span style="color: #457b9d;"><strong>Searching nearby hospitals and blood banks...</strong></span>
+            </div>
+            
+            <div id="hospResultsContainer" style="margin-top: 15px;"></div>
+            
+            <div id="donorFallbackBtnContainer" style="display: none; margin-top: 25px; text-align: center; border-top: 1px solid #eee; padding-top: 25px;">
+                <p style="margin-bottom: 15px; color: #666;">No availability? Request directly from individual donors nearby.</p>
+                <button type="button" class="btn-primary" id="showDonorOptionsBtn" style="background: #e63946;">Request from Donors</button>
+            </div>
+
+            <div id="donorFallbackSection" style="display: none; margin-top: 30px; animation: fadeIn 0.5s; padding: 20px; background: #fff5f5; border: 1px solid #ffccd5; border-radius: 12px;">
+                <form id="donorRequestForm">
+                    <div class="form-group interaction-group">
+                        <label style="color: #d62828;">Define your requirement <span class="tooltip-note">(All donations are voluntary. Support is optional.)</span></label>
+                        <select class="form-control" name="interactionType" id="interactionTypeSelectHosp" required>
+                            <option value="free">❤️ Free Donation (Voluntary, no compensation)</option>
+                            <option value="mutual">🤝 Mutual Support (Optional support for travel/time)</option>
+                            <option value="emergency">🚨 Emergency Priority (Urgent request)</option>
+                        </select>
+                        
+                        <div id="mutualSupportField" class="hidden-field" style="display: none; margin-top: 15px;">
+                            <label>Support Amount (Optional)</label>
+                            <input type="number" class="form-control" id="supportAmount" placeholder="Enter amount (e.g. for travel)">
+                        </div>
+                        
+                        <div id="emergencyAlert" class="hidden-alert" style="display: none; margin-top: 15px; color: #d62828; font-weight: 600; background: #ffeef0; padding: 10px; border-radius: 8px; border-left: 4px solid #d62828;">
+                            🚨 High priority donor request activated
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="background: #d62828;">Find Donors</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="hospital_results.js"></script>
+    <script src="interaction.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="notifications.js"></script>
+</body>
+</html>

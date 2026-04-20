@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemo Connect - Welcome</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container" style="height: 420px; text-align: center; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <a href="index.html" class="logo-neon">
+            <img src="logo.svg" alt="🩸" style="height: 65px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <p style="color: #666; margin-bottom: 40px; line-height: 1.6; font-size: 15px;">Your intelligent blood logistics platform. Connect with donors and hospitals instantly when it matters most.</p>
+        <a href="auth.html" class="btn" style="text-decoration: none; display: flex; align-items: center; justify-content: center; width: 80%;">Get Started</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="logout.js"></script>
+</body>
+</html>

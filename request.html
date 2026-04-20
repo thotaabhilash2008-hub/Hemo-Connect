@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Blood - Hemo Connect</title>
+    <meta name="description" content="Request blood instantly — find nearby hospitals or available donors in your city.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        /* ── Flow Toggle ───────────────────────────────── */
+        .flow-toggle {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .flow-toggle-btn {
+            flex: 1;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1.5px solid rgba(36,52,77,0.12);
+            background: rgba(255,255,255,0.78);
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #24344d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .flow-toggle-btn:hover {
+            border-color: #c1374c;
+            background: #fff5f6;
+            transform: translateY(-2px);
+        }
+
+        .flow-toggle-btn.active {
+            background: linear-gradient(135deg, #c1374c, #9b1b30);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 22px rgba(193,55,76,0.28);
+            transform: translateY(-2px);
+        }
+
+        .flow-toggle-btn .btn-icon {
+            font-size: 20px;
+        }
+
+        /* ── Section Panels ────────────────────────────── */
+        .results-section {
+            display: none;
+            margin-top: 32px;
+            animation: fadeSlideIn 0.35s ease;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0);    }
+        }
+
+        /* ── Section header ───────────────────────────── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: #1d3557;
+            font-size: 20px;
+        }
+
+        .section-badge {
+            background: #eef6ff;
+            color: #0077b6;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* ── Result Cards ─────────────────────────────── */
+        .result-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 24px rgba(72,43,49,0.07);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid rgba(36,52,77,0.06);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(72,43,49,0.12);
+        }
+
+        .result-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .icon-hospital { background: #e3f2fd; }
+        .icon-donor    { background: #e8f5e9; }
+
+        .result-card-info {
+            flex: 1;
+        }
+
+        .result-card-info h4 {
+            margin: 0 0 4px;
+            color: #1d3557;
+            font-size: 16px;
+        }
+
+        .result-card-info p {
+            margin: 0;
+            color: #68707c;
+            font-size: 13px;
+        }
+
+        .blood-badge {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #fff0f0;
+            color: #9b1b30;
+            border: 1px solid rgba(155,27,48,0.18);
+        }
+
+        /* ── Action Button ────────────────────────────── */
+        .action-btn {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.22s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .action-btn-hospital {
+            background: #0077b6;
+            color: #fff;
+        }
+        .action-btn-hospital:hover { background: #005f8e; }
+        .action-btn-hospital:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .action-btn-donor {
+            background: linear-gradient(135deg, #2a9d8f, #1b7a6e);
+            color: #fff;
+        }
+        .action-btn-donor:hover { box-shadow: 0 4px 14px rgba(42,157,143,0.35); }
+
+        /* ── Loading / Empty States ───────────────────── */
+        .loading-state, .empty-state-msg {
+            text-align: center;
+            padding: 36px 20px;
+            background: rgba(255,255,255,0.82);
+            border-radius: 16px;
+            color: #68707c;
+            font-size: 15px;
+            box-shadow: 0 6px 20px rgba(72,43,49,0.06);
+        }
+
+        .loading-state .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(193,55,76,0.15);
+            border-top-color: #c1374c;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin-bottom: 14px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state-msg .empty-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* ── Summary banner ───────────────────────────── */
+        .summary-banner {
+            background: #eef6ff;
+            border-left: 4px solid #0077b6;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #1d3557;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* ── Find button row ──────────────────────────── */
+        .find-btn-row {
+            display: flex;
+            gap: 14px;
+        }
+
+        #findDonorsBtn, #findHospitalsBtn {
+            flex: 1;
+        }
+
+        #findDonorsBtn { display: none; }
+        #findHospitalsBtn { display: flex; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main" style="font-size: 20px;">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext" style="font-size: 7px;">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <div class="nav-item">
+                Data & Tracking ▾
+                <div class="dropdown-menu">
+                    <a href="data-tracking.html#history" class="dropdown-item"><i>📋</i> Donation History</a>
+                    <a href="data-tracking.html#impact" class="dropdown-item"><i>📊</i> Impact Dashboard</a>
+                    <a href="data-tracking.html#rewards" class="dropdown-item"><i>🏆</i> Rewards & Recognition</a>
+                </div>
+            </div>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div style="width: 100%; max-width: 640px;">
+            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+        </div>
+
+        <div class="form-container" style="max-width: 640px;">
+            <h2 class="page-title" style="margin-bottom: 5px;">Request Blood</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 28px;">Find available blood units instantly</p>
+
+            <!-- ── Flow Toggle ── -->
+            <div class="flow-toggle" id="flowToggle">
+                <button class="flow-toggle-btn active" id="btnHospitalFlow" onclick="showHospitalSection()">
+                    <span class="btn-icon">🏥</span> Nearby Hospitals
+                </button>
+                <button class="flow-toggle-btn" id="btnDonorFlow" onclick="showDonorSection()">
+                    <span class="btn-icon">🩸</span> Request Donors
+                </button>
+            </div>
+
+            <!-- ── Shared Form Fields ── -->
+            <form id="unifiedRequestForm">
+                <div class="form-group">
+                    <label>Blood Group Needed</label>
+                    <select class="form-control" id="bloodGroup" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group urgency-group">
+                    <label>Select Urgency Level</label>
+                    <div class="interaction-options urgency-options">
+                        <label class="interaction-card type-normal">
+                            <input type="radio" name="urgencyLevel" value="normal" checked>
+                            <div class="card-content">
+                                <div class="icon">🕒</div>
+                                <div class="card-text">
+                                    <h4>Normal Request</h4>
+                                    <p>Blood required within 24 hours. Standard matching.</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="interaction-card type-priority">
+                            <input type="radio" name="urgencyLevel" value="priority">
+                            <div class="card-content">
+                                <div class="icon">⚡</div>
+                                <div class="card-text">
+                                    <h4>Priority Request</h4>
+                                    <p>Blood required within 6–12 hours. Notify more donors.</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="interaction-card type-emergency">
+                            <input type="radio" name="urgencyLevel" value="emergency">
+                            <div class="card-content">
+                                <div class="icon">🚨</div>
+                                <div class="card-text">
+                                    <h4>Emergency (Critical)</h4>
+                                    <p>Immediate requirement (1–2 hours). High-priority alerts.</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+
+                    <div id="urgencyAlert" style="margin-top: 15px; font-weight: 500; display: none; padding: 10px; border-radius: 8px;"></div>
+                </div>
+
+                <!-- ── Dual Action Buttons ── -->
+                <div class="find-btn-row">
+                    <button type="button" class="btn-primary" id="findHospitalsBtn" onclick="searchHospitals()">
+                        🏥 Find Nearby Hospitals
+                    </button>
+                    <button type="button" class="btn-primary" id="findDonorsBtn" onclick="findDonors()" style="background: linear-gradient(135deg, #2a9d8f, #1b7a6e);">
+                        🩸 Find Donors
+                    </button>
+                </div>
+            </form>
+
+            <!-- ── Status + Email Notification Areas ── -->
+            <div id="requestStatusArea" style="display:none; margin-top:20px; padding:18px; border-radius:14px; background:#eef6ff; color:#1d3557; font-size:14px; line-height:1.5;"></div>
+            <div id="emailNotificationArea" style="display:none; margin-top:16px; padding:18px; border-radius:14px; background:#f4f4ff; color:#1c1c5e; font-size:14px; line-height:1.6; border:1px solid #d1d5db;"></div>
+
+            <!-- ════════════════════════════════════════════════
+                 HOSPITAL SECTION
+            ════════════════════════════════════════════════ -->
+            <div id="hospitalSection" class="results-section visible" style="margin-top: 30px; display: none;">
+                <div class="summary-banner" id="hospitalSummary">
+                    Select blood group and city, then click <strong>Find Nearby Hospitals</strong>.
+                </div>
+                <div class="section-header">
+                    <h3>🏥 Nearby Hospitals &amp; Blood Banks</h3>
+                    <span class="section-badge" id="hospitalCount">–</span>
+                </div>
+                <div id="hospitalsList"></div>
+            </div>
+
+            <!-- ════════════════════════════════════════════════
+                 DONOR SECTION
+            ════════════════════════════════════════════════ -->
+            <div id="donorSection" class="results-section" style="margin-top: 30px; display: none;">
+                <div class="summary-banner" id="donorSummary">
+                    Select blood group and city, then click <strong>Find Donors</strong>.
+                </div>
+                <div class="section-header">
+                    <h3>🩸 Available Donors</h3>
+                    <span class="section-badge" id="donorCount">–</span>
+                </div>
+                <div id="donorsList"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="request.js"></script>
+    <script src="interaction.js"></script>
+    <script src="urgency.js"></script>
+    <script src="chatbot.js"></script>
+    <script>
+        /* ── Live Location Checkbox ──────────────────── */
+        document.getElementById('liveLocationReq').addEventListener('change', function(e) {
+            const citySelect = document.getElementById('citySelect');
+            const locBox = document.getElementById('liveLocationBoxReq');
+            const checkbox = e.target;
+
+            if (checkbox.checked) {
+                if (navigator.geolocation) {
+                    locBox.style.display = 'block';
+                    locBox.innerHTML = '<em>Requesting GPS access...</em>';
+                    window.sharedLocation = null;
+
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            citySelect.disabled = true;
+                            citySelect.required = false;
+                            locBox.innerHTML = '<em>Fetching precise address...</em>';
+
+                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    const address = data.address || {};
+                                    const cityName = address.city || address.town || address.village || address.county || citySelect.value || 'Unknown';
+                                    window.sharedLocation = {
+                                        lat: position.coords.latitude,
+                                        lng: position.coords.longitude,
+                                        city: cityName,
+                                        label: data.display_name || `${cityName}`
+                                    };
+                                    locBox.innerHTML = `<strong>📍 Live Location Found:</strong><br>${window.sharedLocation.label}`;
+                                })
+                                .catch(() => {
+                                    window.sharedLocation = {
+                                        lat: position.coords.latitude,
+                                        lng: position.coords.longitude,
+                                        city: citySelect.value || 'Unknown',
+                                        label: `Lat: ${position.coords.latitude.toFixed(4)}, Lng: ${position.coords.longitude.toFixed(4)}`
+                                    };
+                                    locBox.innerHTML = `<strong>📍 Coordinates:</strong><br>${window.sharedLocation.label}`;
+                                });
+                        },
+                        function() {
+                            alert("Location access denied. Please select a city manually.");
+                            checkbox.checked = false;
+                            citySelect.disabled = false;
+                            citySelect.required = true;
+                            locBox.style.display = 'none';
+                            window.sharedLocation = null;
+                        }
+                    );
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                    checkbox.checked = false;
+                }
+            } else {
+                citySelect.disabled = false;
+                citySelect.required = true;
+                locBox.style.display = 'none';
+                window.sharedLocation = null;
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+    <script src="request.js"></script>
+</body>
+</html>

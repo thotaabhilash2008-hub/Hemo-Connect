@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Results - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" style="display: flex; align-items: center;">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto; margin-right: 10px;">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 22px; font-weight: 800; line-height: 1; letter-spacing: 0.5px;">
+                    <span style="color: #9b1b30;">HEMO</span><span style="color: #1d3557;">CONNECT</span>
+                </div>
+                <div style="font-size: 8px; font-weight: 500; color: #8c8c8c; letter-spacing: 1px; margin-top: 2px; text-transform: uppercase;">
+                    Intelligent Blood Logistics
+                </div>
+            </div>
+        </div>
+        <a href="index.html" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="main-container">
+        <div style="width: 100%; max-width: 600px;">
+            <a href="hospital_results.html" class="back-link">← Back to Hospitals</a>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="page-title" style="margin-bottom: 5px;">Matched Donors</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 25px;">Active individual donors in your vicinity.</p>
+
+            <div id="statusArea" style="margin-top: 15px; text-align: center;">
+                <span style="color: #d62828;"><strong>Matching nearby donors...</strong></span>
+            </div>
+            
+            <div id="aiHeaderSection" style="display: none; margin-top: 20px; background: #fdfaf2; border-left: 4px solid #ffd166; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #d4a32a;">
+                    🤖 AI-powered donor ranking enabled
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="aiToggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div style="display: none; text-align: right; font-size: 12px; color: #888; margin-top: 5px; margin-bottom: 15px;" id="aiToggleLabel">Show AI Recommended First</div>
+            
+            <div id="donorResultsContainer" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="donor_results.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="notifications.js"></script>
+</body>
+</html>

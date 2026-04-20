@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        :root {
+            --primary-red: #ff3131;
+            --dark-blue: #0f172a;
+            --light-grey: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-grey);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            background: white;
+        }
+
+        /* Left Side - Hero */
+        .hero-side {
+            flex: 1;
+            background: var(--dark-blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-side::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 49, 49, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        .hero-content {
+            z-index: 10;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary-red);
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #94a3b8;
+            max-width: 450px;
+            line-height: 1.6;
+        }
+
+        .hero-illustration {
+            margin-top: 60px;
+            width: 100%;
+            max-width: 500px;
+            z-index: 10;
+        }
+
+        /* Right Side - Forms */
+        .form-side {
+            width: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            overflow-y: auto;
+            background: white;
+            position: relative;
+        }
+
+        .role-selector {
+            display: flex;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 35px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #64748b;
+        }
+
+        .role-btn.active {
+            background: white;
+            color: var(--primary-red);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary-red);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 49, 49, 0.1);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 49, 49, 0.3);
+        }
+
+        .form-toggle {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .form-toggle a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .social-auth {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #f8fafc;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 25px 0;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .divider:not(:empty)::before { margin-right: .25em; }
+        .divider:not(:empty)::after { margin-left: .25em; }
+
+        /* Dynamic Fields Display */
+        .dynamic-fields {
+            display: none;
+        }
+
+        .active-fields {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-side { display: none; }
+            .form-side { width: 100%; max-width: 500px; padding: 40px; margin: auto; height: auto; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+            body { background: var(--dark-blue); }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-container">
+        <!-- Left Side -->
+        <div class="hero-side">
+            <div class="logo-area">
+                <img src="logo.svg" alt="🩸" style="height: 50px;">
+                <div style="font-size: 28px; font-weight: 800; letter-spacing: 0.5px;">
+                    <span style="color: #ff3131;">HEMO</span><span style="color: white;">CONNECT</span>
+                </div>
+            </div>
+            <div class="hero-content">
+                <h1>Connecting <span>Lives</span> in Every Drop.</h1>
+                <p>Join our intelligent blood logistics network. Whether you're a hero looking to donate or an agency saving lives, we've got you covered.</p>
+            </div>
+            <div class="hero-illustration">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/blood-donation-2713745-2258079.png" alt="Healthcare Illustration" style="width: 100%; opacity: 0.8;">
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="form-side">
+            <div class="role-selector">
+                <button class="role-btn active" id="roleUser" onclick="switchRole('user')">
+                    <i class='bx bx-user'></i> Donor / Receiver
+                </button>
+                <button class="role-btn" id="roleAgency" onclick="switchRole('agency')">
+                    <i class='bx bx-plus-medical'></i> Agency
+                </button>
+            </div>
+
+            <div id="loginView">
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p id="loginSubtitle">Access your donor dashboard and history.</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label id="loginEmailLabel">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-envelope'></i>
+                            <input type="email" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-lock-alt'></i>
+                            <input type="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; cursor: pointer;">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" style="color: var(--primary-red); font-size: 13px; font-weight: 600; text-decoration: none;">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="auth-btn">Sign In</button>
+                </form>
+
+                <div class="divider">OR CONTINUE WITH</div>
+                <div class="social-auth">
+                    <button class="social-btn"><i class='bx bxl-google' style="color: #ea4335;"></i> Google</button>
+                    <button class="social-btn"><i class='bx bxl-apple' style="color: black;"></i> Apple</button>
+                </div>
+
+                <div class="form-toggle">
+                    Don't have an account? <a href="javascript:void(0)" onclick="toggleAuth('signup')">Sign up</a>
+                </div>
+
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="dashboard.html" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#ff3131'" onmouseout="this.style.color='#94a3b8'">
+                        Continue as Guest
+                    </a>
+                </div>
+            </div>
+
+            <div id="signupView" style="display: none;">
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                    <p id="signupSubtitle">Join the Hemo Connect network today.</p>
+                </div>
+
+                <form id="signupForm">
+                    <!-- Common Fields -->
+                    <div class="input-group">
+                        <label id="nameLabel">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-user' id="nameIcon"></i>
+                            <input type="text" id="signupName" placeholder="Enter name" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label id="signupEmailLabel">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-envelope'></i>
+                            <input type="email" id="signupEmail" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Role Specific: User -->
+                    <div id="userFields" class="active-fields">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="input-group">
+                                <label>Blood Group</label>
+                                <div class="input-wrapper">
+                                    <i class='bx bx-droplet'></i>
+                                    <select id="signupBlood">
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>City</label>
+                                <div class="input-wrapper">
+                                    <i class='bx bx-map'></i>
+                                    <input type="text" id="signupCity" placeholder="City">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role Specific: Agency -->
+                    <div id="agencyFields" class="dynamic-fields">
+                        <div class="input-group">
+                            <label>Organization Type</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-building'></i>
+                                <select id="agencyType">
+                                    <option value="Hospital">Hospital</option>
+                                    <option value="Blood Bank">Blood Bank</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Hospital Name</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-plus-medical'></i>
+                                <input type="text" id="agencyHospitalName" placeholder="Enter Hospital Name">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>License / Registration Number</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-certification'></i>
+                                <input type="text" id="agencyLicense" placeholder="License No.">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-lock-alt'></i>
+                            <input type="password" id="signupPass" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 11px; color: #94a3b8; margin: 15px 0; text-align: center;">
+                        🛡️ Your data is सुरक्षित and securely protected with AES encryption.
+                    </p>
+
+                    <button type="submit" class="auth-btn">Register Now</button>
+                </form>
+
+                <div class="form-toggle">
+                    Already have an account? <a href="javascript:void(0)" onclick="toggleAuth('login')">Sign in</a>
+                </div>
+
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="dashboard.html" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#ff3131'" onmouseout="this.style.color='#94a3b8'">
+                        Continue as Guest
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRole = 'user';
+
+        function switchRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (role === 'user') {
+                document.getElementById('roleUser').classList.add('active');
+                document.getElementById('userFields').classList.add('active-fields');
+                document.getElementById('agencyFields').classList.remove('active-fields');
+                
+                // Labels
+                document.getElementById('nameLabel').innerText = 'Full Name';
+                document.getElementById('loginEmailLabel').innerText = 'Email Address';
+                document.getElementById('signupEmailLabel').innerText = 'Email Address';
+                
+                document.getElementById('nameIcon').className = 'bx bx-user';
+                document.getElementById('loginSubtitle').innerText = 'Access your donor dashboard and history.';
+                document.getElementById('signupSubtitle').innerText = 'Join the Hemo Connect network today.';
+            } else {
+                document.getElementById('roleAgency').classList.add('active');
+                document.getElementById('agencyFields').classList.add('active-fields');
+                document.getElementById('userFields').classList.remove('active-fields');
+                
+                // Labels
+                document.getElementById('nameLabel').innerText = 'Hospital / Blood Bank Name';
+                document.getElementById('loginEmailLabel').innerText = 'Hospital Mail';
+                document.getElementById('signupEmailLabel').innerText = 'Hospital Mail';
+                
+                document.getElementById('nameIcon').className = 'bx bx-building-house';
+                document.getElementById('loginSubtitle').innerText = 'Hospital & Blood Bank login.';
+                document.getElementById('signupSubtitle').innerText = 'Register your agency to start saving lives.';
+            }
+        }
+
+        function toggleAuth(view) {
+            const loginView = document.getElementById('loginView');
+            const signupView = document.getElementById('signupView');
+            
+            if (view === 'signup') {
+                loginView.style.display = 'none';
+                signupView.style.display = 'block';
+            } else {
+                loginView.style.display = 'block';
+                signupView.style.display = 'none';
+            }
+        }
+
+        // Form Submission Logic
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Redirect based on role
+            if (currentRole === 'user') {
+                window.location.href = 'dashboard.html';
+            } else {
+                window.location.href = 'agency-dashboard.html'; // Placeholder
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Signup Successful! Redirecting...');
+            if (currentRole === 'user') {
+                window.location.href = 'dashboard.html';
+            } else {
+                window.location.href = 'agency-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

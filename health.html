@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Nutrition - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <style>
+        :root {
+            --health-green: #39ff14;
+            --health-red: #ff3131;
+            --health-bg: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+        }
+
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+
+        .health-card {
+            background: var(--glass);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .health-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--health-green);
+            box-shadow: 0 15px 40px rgba(57, 255, 20, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: rgba(57, 255, 20, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--health-green);
+        }
+
+        .health-card h2 {
+            font-size: 20px;
+            color: white;
+            margin: 0;
+        }
+
+        /* Tips Checklist */
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 18px;
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .tip-check {
+            color: var(--health-green);
+            font-weight: 800;
+        }
+
+        /* Nutrition Guide */
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .food-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .food-item i {
+            display: block;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .food-item span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Quick Tips Section */
+        .quick-tips-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 50px;
+        }
+
+        .quick-tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .mini-tip {
+            background: rgba(255, 49, 49, 0.05);
+            border-left: 4px solid var(--health-red);
+            padding: 20px;
+            border-radius: 0 16px 16px 0;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.1), rgba(255, 49, 49, 0.1));
+            padding: 40px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main" style="font-size: 20px;">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext" style="font-size: 7px;">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html" class="logout-btn">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="hero-banner">
+            <div>
+                <h1 style="color: white; font-size: 32px; margin-bottom: 10px;">Donor Health & Nutrition</h1>
+                <p style="color: #94a3b8;">Fuel your body to save others. Your recovery starts with the right fuel.</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 40px;">🥗🍎💪</div>
+            </div>
+        </div>
+
+        <div class="health-grid">
+            <!-- 1. Pre-Donation Tips -->
+            <div class="health-card">
+                <div class="card-header">
+                    <div class="icon-box">📅</div>
+                    <h2>Pre-Donation Prep</h2>
+                </div>
+                <ul class="tips-list">
+                    <li class="tip-item"><span class="tip-check">✓</span> <b>Iron-Rich Diet:</b> Focus on spinach, beans, and lean meats 48h before.</li>
+                    <li class="tip-item"><span class="tip-check">✓</span> <b>Hydrate:</b> Drink at least 8-10 glasses of water daily.</li>
+                    <li class="tip-item"><span class="tip-check">✓</span> <b>Power Sleep:</b> Ensure a full 7-9 hours of rest the night before.</li>
+                    <li class="tip-item"><span class="tip-check">✓</span> <b>Light Meal:</b> Eat a non-fatty meal 2-3 hours before donating.</li>
+                </ul>
+            </div>
+
+            <!-- 2. Post-Donation Care -->
+            <div class="health-card" style="border-color: rgba(255, 49, 49, 0.2);">
+                <div class="card-header">
+                    <div class="icon-box" style="background: rgba(255,49,49,0.1); color: var(--health-red);">🩹</div>
+                    <h2>Recovery Steps</h2>
+                </div>
+                <div class="tips-list">
+                    <div class="tip-item"><span style="color:var(--health-red); font-weight:800;">01.</span> Drink an extra 4 glasses of fluids in the first 24 hours.</div>
+                    <div class="tip-item"><span style="color:var(--health-red); font-weight:800;">02.</span> Keep the strip bandage on for the next 4-6 hours.</div>
+                    <div class="tip-item"><span style="color:var(--health-red); font-weight:800;">03.</span> Avoid heavy lifting or intense exercise for the rest of the day.</div>
+                    <div class="tip-item"><span style="color:var(--health-red); font-weight:800;">04.</span> If you feel dizzy, sit or lie down until you feel better.</div>
+                </div>
+            </div>
+
+            <!-- 3. Nutrition Guide -->
+            <div class="health-card">
+                <div class="card-header">
+                    <div class="icon-box">🥦</div>
+                    <h2>Nutrition Guide</h2>
+                </div>
+                <div class="nutrition-grid">
+                    <div class="food-item"><i>🥬</i> <span>Spinach / Kale</span></div>
+                    <div class="food-item"><i>🥚</i> <span>Eggs / Protein</span></div>
+                    <div class="food-item"><i>🍊</i> <span>Vitamin C</span></div>
+                    <div class="food-item"><i>🥩</i> <span>Iron Source</span></div>
+                </div>
+                <p style="margin-top: 20px; font-size: 13px; color: #94a3b8; text-align: center;">
+                    "Combine Iron with Vitamin C for 3x better absorption."
+                </p>
+            </div>
+        </div>
+
+        <div class="quick-tips-container">
+            <h3 style="color: white; margin-bottom: 25px;">💡 Quick Health Insights</h3>
+            <div class="quick-tips-grid">
+                <div class="mini-tip">
+                    <b>Stay Hydrated:</b> Water helps your body rebuild its blood volume faster after a donation.
+                </div>
+                <div class="mini-tip" style="border-color: #39ff14;">
+                    <b>Hemoglobin Check:</b> Maintain levels by eating beetroot and dates regularly.
+                </div>
+                <div class="mini-tip">
+                    <b>Donor Fitness:</b> Donate only when you feel 100% fit and healthy.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px; text-align: center;">
+            <button class="logout-btn" style="border-color: var(--health-green); color: var(--health-green); padding: 15px 40px; font-size: 16px;">
+                📥 Download Health Tips PDF
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+    <script>
+        function downloadHealthPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Branding Colors
+            const red = [255, 49, 49];
+            const green = [57, 255, 20];
+            const navy = [15, 23, 42];
+
+            // 1. Cover Page
+            doc.setFillColor(...navy);
+            doc.rect(0, 0, 210, 297, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(36);
+            doc.setFont('helvetica', 'bold');
+            doc.text('HEMO CONNECT', 105, 100, { align: 'center' });
+            
+            doc.setTextColor(...green);
+            doc.setFontSize(22);
+            doc.text('THE COMPLETE NUTRITION GUIDE', 105, 115, { align: 'center' });
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text('A to Z Roadmap for Donors & Life-Savers', 105, 130, { align: 'center' });
+            
+            doc.setDrawColor(...green);
+            doc.setLineWidth(1);
+            doc.line(70, 135, 140, 135);
+
+            // 2. Section A: The Iron Protocol
+            doc.addPage();
+            doc.setTextColor(...navy);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Section A: The Iron Protocol', 20, 30);
+            
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Iron is the core of your hemoglobin. Focus on these sources:', 20, 40);
+            
+            const ironFoods = [
+                '• Heme Iron: Lean red meat, poultry, and fish (Best absorbed)',
+                '• Non-Heme Iron: Spinach, Kale, Broccoli, and Swiss Chard',
+                '• Legumes: Lentils, Chickpeas, and Kidney Beans',
+                '• Seeds: Pumpkin seeds, Flax seeds, and Quinoa'
+            ];
+            doc.text(ironFoods, 25, 55);
+
+            // 3. Section B: Vitamin C Catalyst
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Section B: The Vitamin C Catalyst', 20, 100);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Vitamin C increases non-heme iron absorption by 300%. Always pair iron with:', 20, 110);
+            
+            const vitCFoods = [
+                '• Citrus: Oranges, Lemons, and Grapefruits',
+                '• Berries: Strawberries, Blueberries, and Raspberries',
+                '• Veggies: Bell Peppers (Red/Yellow), and Tomatoes',
+                '• Tropical: Kiwi, Guava, and Pineapple'
+            ];
+            doc.text(vitCFoods, 25, 125);
+
+            // 4. Section C: Post-Donation Recovery
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Section C: Post-Donation Recovery (First 24h)', 20, 170);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            
+            const recoveryTips = [
+                '• Hydration First: Drink 500ml of water immediately after donating.',
+                '• Fluid Load: Aim for 2-3 liters of fluids within the first 24 hours.',
+                '• Snack Smart: Consume high-glucose snacks like bananas or dates.',
+                '• Avoid: Alcohol and caffeine for the next 12 hours.',
+                '• Rest: No heavy lifting or high-intensity cardio today.'
+            ];
+            doc.text(recoveryTips, 25, 185);
+
+            // 5. Section D: Long-term Vitality
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Section D: Long-term Vitality', 20, 240);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'italic');
+            doc.text('Maintain a balanced diet of complex carbs, healthy fats (Omega-3), and', 20, 250);
+            doc.text('hydration to ensure you are ready for your next life-saving contribution.', 20, 255);
+
+            // Footer
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(...red);
+            doc.text('SAVE LIVES. STAY HEALTHY.', 105, 280, { align: 'center' });
+
+            // Save PDF
+            doc.save('HemoConnect_Nutrition_Guide_AtoZ.pdf');
+            if (window.notify) window.notify('Nutrition PDF downloaded!');
+        }
+
+        // Add event listener to button
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('.logout-btn[style*="var(--health-green)"]');
+            if (btn) {
+                btn.id = 'downloadHealthBtn';
+                btn.onclick = downloadHealthPDF;
+            }
+        });
+    </script>
+</body>
+</html>

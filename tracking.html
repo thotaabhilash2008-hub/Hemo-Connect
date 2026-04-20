@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Tracking - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        /* Step states */
+        .tracker-step.declined .step-indicator {
+            background: #d62828;
+            border-color: #d62828;
+        }
+        .tracker-step.declined .step-icon,
+        .tracker-step.declined h4 {
+            color: #d62828;
+        }
+        /* Pulsing waiting animation for step-3 */
+        .tracker-step.active .step-indicator {
+            animation: pulse-ring 1.4s ease-out infinite;
+        }
+        @keyframes pulse-ring {
+            0%   { box-shadow: 0 0 0 0 rgba(155,27,48,0.4); }
+            70%  { box-shadow: 0 0 0 10px rgba(155,27,48,0); }
+            100% { box-shadow: 0 0 0 0 rgba(155,27,48,0); }
+        }
+        /* Declined banner */
+        #declinedBanner {
+            display: none;
+            margin-top: 20px;
+            background: #ffeef0;
+            border-left: 4px solid #d62828;
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: #7b0000;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        #declinedBanner a {
+            color: #d62828;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" style="display: flex; align-items: center;">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto; margin-right: 10px;">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 22px; font-weight: 800; line-height: 1; letter-spacing: 0.5px;">
+                    <span style="color: #9b1b30;">HEMO</span><span style="color: #1d3557;">CONNECT</span>
+                </div>
+                <div style="font-size: 8px; font-weight: 500; color: #8c8c8c; letter-spacing: 1px; margin-top: 2px; text-transform: uppercase;">
+                    Intelligent Blood Logistics
+                </div>
+            </div>
+        </div>
+        <a href="index.html" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="main-container">
+        <div style="width: 100%; max-width: 600px;">
+            <a href="hospital_results.html" class="back-link" id="backLink">← Back to Results</a>
+        </div>
+
+        <div class="form-container">
+            <h2 class="page-title" style="margin-bottom: 5px;">Live Request Status</h2>
+            <p id="trackingSubtitle" style="text-align: center; color: #666; margin-bottom: 25px;">Tracking your blood request in real time</p>
+
+            <!-- Recipient Info Banner -->
+            <div id="recipientBanner" style="background: #fdf4ff; border-left: 4px solid #9b1b30; padding: 12px 16px; border-radius: 8px; margin-bottom: 25px; font-size: 14px; color: #1d3557;">
+                <strong>📋 Request sent to:</strong> <span id="recipientName" style="color: #9b1b30; font-weight: 700;">–</span>
+            </div>
+
+            <!-- Status Timeline -->
+            <div class="status-timeline">
+
+                <div class="tracker-step pending" id="step-1">
+                    <div class="step-indicator"></div>
+                    <div class="step-icon">📤</div>
+                    <div class="step-content">
+                        <h4>Transmitting</h4>
+                        <p class="step-msg">Sending your request...</p>
+                    </div>
+                </div>
+
+                <div class="tracker-step pending" id="step-2">
+                    <div class="step-indicator"></div>
+                    <div class="step-icon">📡</div>
+                    <div class="step-content">
+                        <h4>Notifying</h4>
+                        <p class="step-msg">Notifying the selected contact...</p>
+                    </div>
+                </div>
+
+                <div class="tracker-step pending" id="step-3">
+                    <div class="step-indicator"></div>
+                    <div class="step-icon">⏳</div>
+                    <div class="step-content">
+                        <h4>Waiting for Approval</h4>
+                        <p class="step-msg">Waiting for the donor to accept or decline...</p>
+                    </div>
+                </div>
+
+                <div class="tracker-step pending" id="step-4">
+                    <div class="step-indicator"></div>
+                    <div class="step-icon">✅</div>
+                    <div class="step-content">
+                        <h4>Accepted</h4>
+                        <p class="step-msg" id="msg-accepted">Pending acceptance...</p>
+                    </div>
+                </div>
+
+                <div class="tracker-step pending" id="step-5">
+                    <div class="step-indicator"></div>
+                    <div class="step-icon">🚗</div>
+                    <div class="step-content">
+                        <h4>On the way</h4>
+                        <p class="step-msg" id="msg-eta">Awaiting dispatch...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Declined notice (shown only on decline) -->
+            <div id="declinedBanner">
+                ❌ Your request was <strong>declined</strong> by the selected donor.<br>
+                Please <a onclick="window.location.href='donor_results.html'">try another donor</a> or go back to
+                <a onclick="window.location.href='hospital_results.html'">hospital results</a>.
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="button" id="cancelRequestBtn" style="padding: 10px 20px; background: transparent; border: 2px solid #888; color: #666; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">Cancel Request</button>
+                <button type="button" id="doneBtn" style="display: none; padding: 12px 25px; background: #2a9d8f; border: none; color: white; border-radius: 8px; font-weight: 600; cursor: pointer; margin-left: 10px;" onclick="window.location.href='dashboard.html'">Return to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="tracking.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+</body>
+</html>

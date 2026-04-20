@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Requests - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" style="display: flex; align-items: center;">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto; margin-right: 10px;">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 22px; font-weight: 800; line-height: 1; letter-spacing: 0.5px;">
+                    <span style="color: #9b1b30;">HEMO</span><span style="color: #1d3557;">CONNECT</span>
+                </div>
+                <div style="font-size: 8px; font-weight: 500; color: #8c8c8c; letter-spacing: 1px; margin-top: 2px; text-transform: uppercase;">
+                    Intelligent Blood Logistics
+                </div>
+            </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="donate.html" style="color:#ffffff; background:#2a9d8f; padding:10px 16px; border-radius:10px; text-decoration:none; font-weight:700;">Donor Home</a>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div style="width: 100%; max-width: 720px; margin-bottom: 18px;">
+            <a href="donate.html" class="back-link">← Back to Donor Dashboard</a>
+        </div>
+
+        <div class="form-container">
+            <h2 class="page-title" style="margin-bottom: 10px;">All Donor Requests</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 25px;">Review all available requests matched to your donor profile.</p>
+
+            <div id="requestsStatus" style="margin-bottom: 18px; color:#1d3557; font-size:14px;"></div>
+            <div id="donorRequestsContainer" style="display:grid; gap:18px;"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="donor_requests.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="notifications.js"></script>
+</body>
+</html>

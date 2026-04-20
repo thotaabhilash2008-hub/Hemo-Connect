@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemo Connect - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main" style="font-size: 20px;">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext" style="font-size: 7px;">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <div class="nav-item">
+                Data & Tracking ▾
+                <div class="dropdown-menu">
+                    <a href="data-tracking.html#history" class="dropdown-item"><i>📋</i> Donation History</a>
+                    <a href="data-tracking.html#impact" class="dropdown-item"><i>📊</i> Impact Dashboard</a>
+                    <a href="data-tracking.html#rewards" class="dropdown-item"><i>🏆</i> Rewards & Recognition</a>
+                </div>
+            </div>
+            <div class="nav-item">
+                Community ▾
+                <div class="dropdown-menu">
+                    <a href="community.html#stories" class="dropdown-item"><i>🌟</i> Success Stories</a>
+                    <a href="community.html#volunteer" class="dropdown-item"><i>🤝</i> Volunteer</a>
+                    <a href="community.html#events" class="dropdown-item"><i>📅</i> Events & Camps</a>
+                </div>
+            </div>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-title">
+            <h1>Welcome to Hemo Connect Platform</h1>
+            <p>Define your requirement</p>
+        </div>
+
+        <div class="cards-container">
+            <a href="request.html" class="card">
+                <div class="card-icon">🩸</div>
+                <h2>Request Blood</h2>
+                <p>Find nearby donors quickly in case of emergency.</p>
+            </a>
+
+            <a href="donate.html" class="card">
+                <div class="card-icon">❤️</div>
+                <h2>Donate Blood</h2>
+                <p>Register as a donor and help save lives today.</p>
+            </a>
+
+            <a href="donor_requests.html" class="card">
+                <div class="card-icon">📬</div>
+                <h2>Donor Inbox</h2>
+                <p>View and manage incoming blood requests.</p>
+            </a>
+
+            <a href="map.html" class="card">
+                <div class="card-icon">🌍</div>
+                <h2>Live Network</h2>
+                <p>Real-time map of donors and active requests.</p>
+            </a>
+
+
+            <a href="health.html" class="card">
+                <div class="card-icon" style="color: #39ff14;">🥗</div>
+                <h2>Health & Nutrition</h2>
+                <p>Pre & post donation tips for your well-being.</p>
+            </a>
+
+            <a href="emergency.html" class="card card-emergency">
+                <div class="card-icon">🚨</div>
+                <h2>Emergency Help</h2>
+                <p>Talk to our AI Assistant for instant guidance.</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+</body>
+</html>

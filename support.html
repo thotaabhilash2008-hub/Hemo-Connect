@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety & Support - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <style>
+        :root {
+            --support-red: #ff3131;
+            --support-bg: #0f172a;
+            --support-card: rgba(30, 41, 59, 0.7);
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+
+        .support-card {
+            background: var(--support-card);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--support-red);
+            box-shadow: 0 15px 40px rgba(255, 49, 49, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 49, 49, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--support-red);
+        }
+
+        .card-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* Health Screening UI */
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .check-icon {
+            color: var(--support-red);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 20px 0;
+        }
+
+        /* FAQ Accordion */
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 15px 0;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.3s;
+        }
+
+        .faq-question:hover { color: var(--support-red); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding-bottom: 15px;
+        }
+
+        .faq-item.active .faq-question { color: var(--support-red); }
+
+        /* Support Button */
+        .support-btn {
+            margin-top: auto;
+            background: var(--support-red);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3);
+        }
+
+        .support-btn:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 15px;
+            border-radius: 99px;
+            font-size: 12px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Emergency Button */
+        .emergency-btn {
+            background: #d62828;
+            border: 2px solid white;
+            box-shadow: 0 0 20px rgba(214, 40, 40, 0.4);
+            margin-top: 30px;
+        }
+
+        /* Contact Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 28px;
+            border: 1px solid #ff3131;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main" style="font-size: 20px;">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext" style="font-size: 7px;">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <div class="nav-actions">
+            <a href="dashboard.html" class="logout-btn">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-title">
+            <h1>Safety & Support Center</h1>
+            <p>Your health and data security are our top priorities.</p>
+        </div>
+
+        <div class="support-grid">
+            <!-- 1. Health Screening -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="header-icon">🏥</div>
+                    <h2>Health Screening</h2>
+                </div>
+                <h4 style="color: #ffffff; margin-bottom: 15px; font-size: 15px;">Eligibility Checklist</h4>
+                <ul class="check-list">
+                    <li class="check-item"><span class="check-icon">✓</span> Age: 18 – 65 years old</li>
+                    <li class="check-item"><span class="check-icon">✓</span> Weight: Minimum 50 kg</li>
+                    <li class="check-item"><span class="check-icon">✓</span> General Health: No recent illness/infection</li>
+                    <li class="check-item"><span class="check-icon">✓</span> Hemoglobin: ≥ 12.5 g/dL</li>
+                </ul>
+                <div class="section-divider"></div>
+                <h4 style="color: #ffffff; margin-bottom: 15px; font-size: 15px;">Post-Donation Care</h4>
+                <ul class="check-list">
+                    <li class="check-item"><span class="check-icon">🥤</span> Drink plenty of fluids</li>
+                    <li class="check-item"><span class="check-icon">🛋️</span> Avoid heavy exercise for 24h</li>
+                    <li class="check-item"><span class="check-icon">🩹</span> Keep bandage on for 4-6 hours</li>
+                    <li class="check-item"><span class="check-icon">🍎</span> Eat iron-rich foods</li>
+                </ul>
+            </div>
+
+            <!-- 2. FAQs & Support -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="header-icon">💬</div>
+                    <h2>FAQs & Support</h2>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question">Is blood donation safe? <span>+</span></button>
+                        <div class="faq-answer">Yes, it is extremely safe. We use new, sterile needles for every donor, which are discarded after a single use.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">How often can I donate? <span>+</span></button>
+                        <div class="faq-answer">Whole blood donors can donate every 56 days (8 weeks). Platelet donors can donate more frequently.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Does it hurt? <span>+</span></button>
+                        <div class="faq-answer">You might feel a quick pinch when the needle is inserted, but the actual donation process is painless.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">How long does it take? <span>+</span></button>
+                        <div class="faq-answer">The entire process takes about 45-60 minutes, with the actual blood draw taking only 8-10 minutes.</div>
+                    </div>
+                </div>
+                <button class="support-btn" id="openSupport">
+                    <span>🎧</span> Contact Helpdesk Support
+                </button>
+            </div>
+
+            <!-- 3. Privacy & Verification -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="header-icon">🛡️</div>
+                    <h2>Privacy & Verification</h2>
+                </div>
+                <h4 style="color: #ffffff; margin-bottom: 15px; font-size: 15px;">Data Protection</h4>
+                <ul class="check-list">
+                    <li class="check-item"><span class="check-icon">🔒</span> End-to-end data encryption</li>
+                    <li class="check-item"><span class="check-icon">🆔</span> Secure multi-factor authentication</li>
+                    <li class="check-item"><span class="check-icon">🤝</span> No data sharing without consent</li>
+                </ul>
+                <div class="section-divider"></div>
+                <h4 style="color: #ffffff; margin-bottom: 15px; font-size: 15px;">Verification Methods</h4>
+                <ul class="check-list">
+                    <li class="check-item"><span class="check-icon">📱</span> Real-time OTP verification</li>
+                    <li class="check-item"><span class="check-icon">💳</span> ID proof validation at center</li>
+                    <li class="check-item"><span class="check-icon">👤</span> Admin-approved donor profiles</li>
+                </ul>
+                <div class="trust-badges">
+                    <div class="badge">🛡️ SSL Secured</div>
+                    <div class="badge">🔒 AES-256</div>
+                    <div class="badge">✅ Verified</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="support-btn emergency-btn" id="emergencySupport">
+            🚨 Contact Emergency Support
+        </button>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <h2 style="color: white; margin-bottom: 25px;">Contact Support</h2>
+            <form id="supportForm">
+                <input type="text" class="form-control" placeholder="Your Name" required>
+                <input type="email" class="form-control" placeholder="Email Address" required>
+                <textarea class="form-control" rows="5" placeholder="How can we help you?" required></textarea>
+                <button type="submit" class="support-btn" style="width: 100%;">Send Message</button>
+                <button type="button" class="support-btn" id="closeModal" style="width: 100%; margin-top: 10px; background: rgba(255,255,255,0.1); box-shadow: none;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                
+                // Toggle icon
+                const span = button.querySelector('span');
+                span.textContent = faqItem.classList.contains('active') ? '−' : '+';
+            });
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('supportModal');
+        document.getElementById('openSupport').addEventListener('click', () => modal.style.display = 'flex');
+        document.getElementById('closeModal').addEventListener('click', () => modal.style.display = 'none');
+        
+        window.onclick = (event) => {
+            if (event.target == modal) modal.style.display = 'none';
+        }
+
+        // Form Submission
+        document.getElementById('supportForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerHTML = 'Sending...';
+            
+            setTimeout(() => {
+                if (window.notify) window.notify('✅ Message sent! Our team will contact you soon.');
+                modal.style.display = 'none';
+                e.target.reset();
+                btn.innerHTML = 'Send Message';
+            }, 1500);
+        });
+
+        document.getElementById('emergencySupport').addEventListener('click', () => {
+            if (window.notify) window.notify('🚨 Emergency Support Triggered. Connecting you to the nearest center...');
+        });
+    </script>
+</body>
+</html>

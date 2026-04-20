@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Support - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --emergency-red: #ff3131;
+            --emergency-bg: #0f172a;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .emergency-grid { grid-template-columns: 1fr; }
+        }
+
+        /* AI Assistant Section */
+        .ai-assistant-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 49, 49, 0.3);
+            display: flex;
+            flex-direction: column;
+            height: 700px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(255, 49, 49, 0.1);
+            border-bottom: 1px solid rgba(255, 49, 49, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--emergency-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 15px rgba(255, 49, 49, 0.4);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.ai {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user {
+            background: var(--emergency-red);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .suggest-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggest-btn:hover {
+            background: rgba(255, 49, 49, 0.2);
+            border-color: var(--emergency-red);
+            color: white;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+        }
+
+        .voice-btn, .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .voice-btn { background: rgba(255,255,255,0.05); color: white; }
+        .send-btn { background: var(--emergency-red); color: white; }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .action-card {
+            background: rgba(255, 49, 49, 0.1);
+            border: 1px solid var(--emergency-red);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            background: var(--emergency-red);
+            transform: scale(1.02);
+        }
+
+        .action-card h3 { margin: 0; font-size: 18px; }
+
+        /* Hospital Map */
+        #hospitalMap {
+            height: 300px;
+            border-radius: 20px;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .disclaimer-banner {
+            background: #d62828;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .page-title h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid #ffffff;
+            border-radius: 50px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .page-title h1:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 25px rgba(255, 255, 255, 1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main" style="font-size: 20px;">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext" style="font-size: 7px;">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <div class="nav-actions">
+            <a href="dashboard.html" class="logout-btn">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="disclaimer-banner">
+            🚨 FOR IMMEDIATE LIFE-THREATENING EMERGENCIES, CALL 112 OR YOUR LOCAL EMERGENCY NUMBER IMMEDIATELY.
+        </div>
+
+        <div class="page-title" style="text-align: left; margin-bottom: 10px;">
+            <h1>Emergency Support Center</h1>
+            <p>Describe your emergency to our AI Talk Assistant for instant guidance.</p>
+        </div>
+
+        <div class="emergency-grid">
+            <!-- AI Talk Assistant -->
+            <div class="ai-assistant-card">
+                <div class="chat-header">
+                    <div class="ai-avatar">🤖</div>
+                    <div>
+                        <h3 style="color: white; margin: 0; font-size: 16px;">AI Emergency Assistant</h3>
+                        <small style="color: #39ff14;">● Online & Ready to Help</small>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        Hello. I am your AI Emergency Assistant. Please describe what is happening. I can provide first-aid steps and guidance while you seek professional help.
+                    </div>
+                    <div style="font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; margin: 10px 0;">
+                        Disclaimer: This AI provides general guidance only and is not a substitute for a doctor.
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="suggestions">
+                        <button class="suggest-btn">I feel dizzy</button>
+                        <button class="suggest-btn">Accident happened</button>
+                        <button class="suggest-btn">Need blood urgently</button>
+                        <button class="suggest-btn">Bleeding heavily</button>
+                    </div>
+                    <div class="input-wrapper">
+                        <button class="voice-btn" id="voiceBtn">🎤</button>
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Describe the problem...">
+                        <button class="send-btn" id="sendBtn">➤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Actions -->
+            <div class="side-area">
+                <div class="quick-actions">
+                    <a href="tel:112" class="action-card" style="background: #d62828;">
+                        <span style="font-size: 24px;">🚑</span>
+                        <h3>Call Ambulance (112)</h3>
+                    </a>
+                    <a href="request.html" class="action-card">
+                        <span style="font-size: 24px;">🩸</span>
+                        <h3>Request Blood Now</h3>
+                    </a>
+                    <button class="action-card" id="shareLocBtn" style="background: rgba(0, 210, 255, 0.1); border-color: #00d2ff; width: 100%; text-align: left; cursor: pointer;">
+                        <span style="font-size: 24px;">📍</span>
+                        <h3>Share My Location</h3>
+                    </button>
+                </div>
+
+                <div class="support-card" style="margin-top: 30px; background: rgba(30,41,59,0.5);">
+                    <h3 style="color: white; margin-bottom: 15px;">Nearby Help</h3>
+                    <div id="hospitalMap"></div>
+                    <div style="margin-top: 15px;" id="hospitalList">
+                        <!-- Hospitals will be listed here -->
+                        <div class="legend-item" style="font-size: 13px; color: #cbd5e1;">
+                            Searching for nearby hospitals...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+    <script>
+        // Simple AI Logic
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+        const sendBtn = document.getElementById('sendBtn');
+
+        function addMessage(text, isAi) {
+            const msg = document.createElement('div');
+            msg.className = `message ${isAi ? 'ai' : 'user'}`;
+            msg.innerHTML = text;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        const responses = {
+            'dizzy': 'Feeling dizzy can be caused by low blood sugar or dehydration. **Sit or lie down immediately** to prevent a fall. Drink some water or a sugary drink if available. If this is accompanied by chest pain or numbness, call an ambulance.',
+            'accident': 'Stay calm. Check if the scene is safe. Do not move an injured person unless there is an immediate danger. **Apply firm pressure to any bleeding wounds** using a clean cloth. Call 112 immediately.',
+            'blood': 'I understand you need blood urgently. Please use our **Request Blood** tool to notify nearby donors. Stay with the patient and keep them warm. Have their medical records ready.',
+            'bleeding': 'Apply **direct, firm pressure** to the wound with a clean cloth or bandage. Do not remove the cloth if it becomes soaked; add another one on top. Keep the injured limb elevated above heart level if possible.',
+            'chest': 'If you or someone else has chest pain, **call emergency services (112) immediately**. Sit the person down and keep them calm. Loosen tight clothing. This could be a serious cardiac event.'
+        };
+
+        function getAiResponse(text) {
+            const input = text.toLowerCase();
+            let response = "I understand. Please stay calm. Can you provide more details? While I process this, ensure the person is in a safe position. If the situation is life-threatening, please call 112 immediately.";
+            
+            for (const key in responses) {
+                if (input.includes(key)) {
+                    response = responses[key] + "<br><br>*Note: This is general guidance only. Seek professional medical help.*";
+                    break;
+                }
+            }
+            return response;
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMessage(text, false);
+            chatInput.value = '';
+            setTimeout(() => {
+                addMessage(getAiResponse(text), true);
+            }, 1000);
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendBtn.click();
+        });
+
+        document.querySelectorAll('.suggest-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                chatInput.value = btn.textContent;
+                sendBtn.click();
+            });
+        });
+
+        // Voice Recognition Mock
+        document.getElementById('voiceBtn').addEventListener('click', () => {
+            if (window.notify) window.notify('🎤 Voice Recognition activated. Speak now...');
+            // In a real app, use Web Speech API
+        });
+
+        // Map Initialization
+        const map = L.map('hospitalMap').setView([20.5937, 78.9629], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+        document.getElementById('shareLocBtn').addEventListener('click', () => {
+            if (window.notify) window.notify('📍 Sharing live location with emergency services...');
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const { latitude, longitude } = pos.coords;
+                map.setView([latitude, longitude], 15);
+                L.marker([latitude, longitude]).addTo(map).bindPopup('Your Location').openPopup();
+                
+                // Mock nearby hospitals
+                const hospitals = [
+                    { name: "City General Hospital", dist: "0.8 km" },
+                    { name: "Red Cross Blood Bank", dist: "1.2 km" }
+                ];
+                document.getElementById('hospitalList').innerHTML = hospitals.map(h => `
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h4 style="margin:0; color:white; font-size:14px;">${h.name}</h4>
+                            <small style="color:rgba(255,255,255,0.5);">📍 ${h.dist}</small>
+                        </div>
+                        <a href="tel:000" style="background: #39ff14; padding: 5px 10px; border-radius: 8px; color: black; font-size: 12px; text-decoration: none; font-weight: 700;">CALL</a>
+                    </div>
+                `).join('');
+            });
+        });
+    </script>
+</body>
+</html>

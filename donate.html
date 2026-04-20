@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Blood - Hemo Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bloodlink.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="logo.svg" alt="🩸" style="height: 35px; width: auto;">
+            <div class="logo-text">
+                <div class="logo-main" style="font-size: 20px;">
+                    <span class="hemo">HEMO</span><span class="connect">CONNECT</span>
+                </div>
+                <div class="logo-subtext" style="font-size: 7px;">Intelligent Blood Logistics</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <div class="nav-item">
+                Data & Tracking ▾
+                <div class="dropdown-menu">
+                    <a href="data-tracking.html#history" class="dropdown-item"><i>📋</i> Donation History</a>
+                    <a href="data-tracking.html#impact" class="dropdown-item"><i>📊</i> Impact Dashboard</a>
+                    <a href="data-tracking.html#rewards" class="dropdown-item"><i>🏆</i> Rewards & Recognition</a>
+                </div>
+            </div>
+            <a href="donor_requests.html" style="color:#ffffff; background:#2a9d8f; padding:10px 16px; border-radius:10px; text-decoration:none; font-weight:700;">Requests</a>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div style="width: 100%; max-width: 600px;">
+            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+        </div>
+        
+        <!-- Onboarding Slider -->
+        <div class="slider-container" id="donateSlider">
+            <div class="slides-wrapper">
+                <div class="slide">
+                    <div class="slide-icon">📋</div>
+                    <h3>Step 1: Check Eligibility</h3>
+                    <p>Make sure you are healthy, meet age requirements, and haven’t donated recently.</p>
+                </div>
+                <div class="slide">
+                    <div class="slide-icon">✍️</div>
+                    <h3>Step 2: Sign Up</h3>
+                    <p>Provide your blood group, location, and contact info so we can connect you quickly.</p>
+                </div>
+                <div class="slide">
+                    <div class="slide-icon">🗓️</div>
+                    <h3>Step 3: Set Availability</h3>
+                    <p>Let the system know when you are available to donate so you only receive relevant alerts.</p>
+                </div>
+                <div class="slide">
+                    <div class="slide-icon">🔔</div>
+                    <h3>Step 4: Get Notified</h3>
+                    <p>You will receive instant alerts when someone nearby needs your blood group.</p>
+                </div>
+                <div class="slide">
+                    <div class="slide-icon">❤️</div>
+                    <h3>Step 5: Save a Life</h3>
+                    <p>Accept the request and proceed to the nearest hospital or donation center.</p>
+                </div>
+            </div>
+            <div class="slider-dots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="page-title" style="margin-bottom: 20px;">Register Now</h2>
+            
+            <form id="donateForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" id="donorNameInput" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" id="donorEmail" placeholder="Enter your email for request alerts" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select class="form-control" id="bloodGroupDon" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label>Availability Status</label>
+                    <select class="form-control" id="availabilitySelect" required>
+                        <option value="available">Available to donate</option>
+                        <option value="not_available">Not available currently</option>
+                    </select>
+                </div>
+                
+                <div class="form-group interaction-group">
+                    <label>Define your requirement <span class="tooltip-note">(All donations are voluntary. Support is optional and transparent.)</span></label>
+                    <select class="form-control" name="interactionType" id="interactionTypeSelectDon" required>
+                        <option value="free">❤️ Free Donation (Voluntary, no compensation)</option>
+                        <option value="mutual">🤝 Mutual Support (Optional support for travel/time)</option>
+                        <option value="emergency">🚨 Emergency Priority (Urgent request)</option>
+                    </select>
+                    
+                    <div id="mutualSupportField" class="hidden-field" style="display: none; margin-top: 15px;">
+                        <label>Support Amount Required (Optional)</label>
+                        <input type="number" class="form-control" id="supportAmount" placeholder="Enter amount (e.g. for travel)">
+                    </div>
+                    
+                    <div id="emergencyAlert" class="hidden-alert" style="display: none; margin-top: 15px; color: #d62828; font-weight: 600; background: #ffeef0; padding: 10px; border-radius: 8px; border-left: 4px solid #d62828;">
+                        🚨 High priority donation activated
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="createNewProfile" style="width: 18px; height: 18px; cursor: pointer;">
+                    <label for="createNewProfile" style="margin-bottom: 0; cursor: pointer; color: #555; font-size: 14px; font-weight: 600;">➕ Create as a new donor profile (allow multiple)</label>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="donateSubmitBtn">Update Status</button>
+            </form>
+
+            <div id="confirmationArea" style="margin-top: 20px; text-align: center; font-weight: 500;"></div>
+
+            <div id="requestListSection" style="display:none; margin-top: 30px;">
+                <div style="background:#f8fafc; border-left:4px solid #d62828; padding:18px 22px; border-radius:18px; margin-bottom:18px; color:#1d3557;">
+                    <h3 style="margin:0 0 8px 0; font-size:18px;">Your donor request list</h3>
+                    <p id="requestListSummary" style="margin:0; color:#555; font-size:14px;">Waiting for matching requests...</p>
+                </div>
+                <div id="requestListContainer" style="display:grid; gap:16px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="donate.js"></script>
+    <script src="interaction.js"></script>
+    <script src="chatbot.js"></script>
+    <script>
+        // Location logic
+        document.getElementById('liveLocationDon').addEventListener('change', function(e) {
+            const citySelect = document.getElementById('citySelectDon');
+            const locBox = document.getElementById('liveLocationBoxDon');
+            const checkbox = e.target;
+            
+            if (checkbox.checked) {
+                if (navigator.geolocation) {
+                    locBox.style.display = 'block';
+                    locBox.innerHTML = '<em>Requesting GPS access...</em>';
+                    // Triggers the browser's native location permission pop-up
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            citySelect.disabled = true;
+                            citySelect.required = false;
+                            
+                            locBox.innerHTML = '<em>Fetching precise address...</em>';
+                            
+                            // Free reverse geocoding API
+                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    locBox.innerHTML = `<strong>📍 Live Location Found:</strong><br>${data.display_name}`;
+                                })
+                                .catch(err => {
+                                    locBox.innerHTML = `<strong>📍 Coordinates:</strong><br>Lat: ${position.coords.latitude.toFixed(4)}, Lng: ${position.coords.longitude.toFixed(4)}`;
+                                });
+                        },
+                        function(error) {
+                            alert("Location access denied. Please select a city manually.");
+                            checkbox.checked = false;
+                            citySelect.disabled = false;
+                            citySelect.required = true;
+                            locBox.style.display = 'none';
+                        }
+                    );
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                    checkbox.checked = false;
+                }
+            } else {
+                citySelect.disabled = false;
+                citySelect.required = true;
+                locBox.style.display = 'none';
+            }
+        });
+
+        // Slider logic
+        let slideIndex = 0;
+        function showSlide(index) {
+            const wrapper = document.querySelector('.slides-wrapper');
+            const dots = document.querySelectorAll('.slider-dots .dot');
+            
+            if (index >= 5) slideIndex = 0;
+            else if (index < 0) slideIndex = 4;
+            else slideIndex = index;
+            
+            wrapper.style.transform = `translateX(-${slideIndex * 20}%)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex].classList.add('active');
+        }
+
+        function currentSlide(index) {
+            showSlide(index);
+        }
+
+        // Auto-advance every 4 seconds
+        setInterval(() => {
+            showSlide(slideIndex + 1);
+        }, 4000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="notifications.js"></script>
+    <script src="location-manager.js"></script>
+    <script src="donate.js"></script>
+</body>
+</html>
